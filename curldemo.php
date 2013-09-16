@@ -7,37 +7,16 @@ if($sessioncount>2000)
 exit;
 $arr=$_SESSION['arr'];
 $id=$arr[$sessioncount];
-// libxml_use_internal_errors(true);
-/*$ch = curl_init("https://bigfuture.collegeboard.org/college-university-search/print-college-profile?id=4509");
-curl_setopt($ch, CURLOPT_HEADER, 0);
-//curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-$output = curl_exec($ch);      
-curl_close($ch);
-echo $output;
-echo htmlentities($output);*/
-/*
-$ch = curl_init() or die(curl_error());
-curl_setopt($ch, CURLOPT_URL,"http://search.msn.com/results.aspx?q=test&FORM=MSNH");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-$data1=curl_exec($ch) or die("fg");
-echo "<font color=black face=verdana size=3>".$data1."</font>";
-echo curl_error($ch);
-curl_close($ch);*/
+
 set_time_limit(0);
 if(isset($_GET['id']))
-$count=$_GET['id'];
+	$count=$_GET['id'];
 else
-{
-echo 'id not set';
-exit;
-}
-//$count=1;
-//$collegecount=1;
-// Get cURL resource
-//while($count<6)
-//{
+	{
+		echo 'id not set';
+		exit;
+	}
+
 $curl = curl_init();
 $ch=$curl;
 // Set some options - we are passing in a useragent too here
@@ -46,106 +25,34 @@ curl_setopt_array($curl, array(
     CURLOPT_URL => 'https://bigfuture.collegeboard.org/college-university-search/print-college-profile?id=' . $count,
     CURLOPT_USERAGENT => 'Mozilla Firefox'
 ));
-//curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-//curl_setopt($curl, CURLOPT_HEADER, 0);
+
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); 
 //Send the request & save response to $resp
 $resp = curl_exec($curl);
 if($resp ==false)
-echo 'Curl error: ' . curl_error($curl);
-//echo strlen($resp);
+	echo 'Curl error: ' . curl_error($curl);
+
 
 include_once('simple_html_dom.php');
-//echo $resp;
+
 $name = explode('<title>', $resp);
 $name2= explode('</title>', $name[1]);
 $name3= explode('College Search - ',$name2[0]);
 
 
 $collegename=$name3[1];
-//echo $collegename;
 
-//echo 'name-->' . $name3[1];
+
+
 $pieces = explode('</script>', $name2[1]);
 $pieces1= explode("<script",$pieces[1]);
 $html = str_get_html($pieces1[0]);
 $place=$html->find('h2',0)->innertext;
-//echo 'place->' .$place;
+
 $h1tags = explode('<div class="mainTabSeperator"></div>',$html);
 $cnth1tags=count($h1tags)-1;
-//$h1tags = explode('<h1>',$html);
-//foreach($h1tags as $x)
-//{echo htmlentities($x) . "<br /><br />======================================================================================================<br /><br />";}
-//foreach($html->find('tr') as $element)
-//       echo $element->innertext . '<br>';
 
-
-//print_r($pieces1[0]);
-//$pieces2= explode("College Search - ",$pieces1[0]);
-//if(isset($pieces2[1]))
-//{
-//echo '<tr><td>' .$count . '</td><td>' . $pieces2[1] . '</td>';
-//=============================================================================
-//require_once('includes/constants.php');
-//$link=mysql_connect($DB_SERVER,$DB_USER,$DB_PASS)or die("cannot connect"); 
-//mysql_select_db($DB_DATABASE,$link)or die("cannot select DB");
-//$sql="insert into colleges values ('$count','$pieces2[1]')";
-//$result=mysql_query($sql);
-//mysql_close($link);
-//=============================================================================
-//}
-//else
-//echo "<tr><td>" .$count . "</td><td> Doesn't Exists </td>";
-
-
-
-
-
-//Close request to clear up some resources
-//$main=$resp;
-//$resp=htmlentities($main, 'ENT_DISALLOWED');
-//$html = new DOMDocument(); 
-//$html->recover = true;
-//$html->strictErrorChecking = false;
-//$html->loadHTML($main);
-//print_r($html);
-//print_r($main);
-//$books = $html->getElementsByTagName('book');
-//foreach ($books as $book) {
- //   echo $book->nodeValue, PHP_EOL;
-//}
-//$html=str_get_html($resp);
-//echo $html->find('title')->innertext ;//= 'foo';
 curl_close($curl);
-//$count++;
-//$collegecount++;
-//}//end of while
-
-/**
- * PHPExcel
- *
- * Copyright (C) 2006 - 2012 PHPExcel
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.7, 2012-05-19
- */
 
 /** Error reporting */
 error_reporting(E_ALL);
@@ -172,9 +79,8 @@ $objPHPExcel->getProperties()->setCreator("Kaushik Wavhal")
 $objPHPExcel->getDefaultStyle()->getFont()->setSize(12); 							 
 							 
 // Create a first sheet, representing sales data
-//echo date('H:i:s') , " Add some data" , PHP_EOL;
+
 $objPHPExcel->setActiveSheetIndex(0);
-//**
 
 
 //Actual data
@@ -224,28 +130,20 @@ $columnchar='A';
 $cnt=1;
 foreach($h1tags as $x)
 {
-if($cnt==1)
-{
-$try=explode('>', $x);
-$len=count($try);
-$heading=substr($try[$len-2],0,count($try[$len-2])-5);
-$objPHPExcel->getActiveSheet()->setCellValue('A'.$row, $heading);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setBold(true);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setSize(20);
-$row++;
-//echo '<br />';
-$cnt++;
-}
-else if($cnt>1)
-{
-//echo htmlentities($x) . "<br /><br />======================================================================================================<br /><br />";
-
-/*$heading= explode('</h1>',$x);
-$objPHPExcel->getActiveSheet()->setCellValue('A'.$row, $heading[0]);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setBold(true);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setSize(20);
-$row++;*/
-$finalhtml=str_get_html($x);
+	if($cnt==1)
+	{
+	$try=explode('>', $x);
+	$len=count($try);
+	$heading=substr($try[$len-2],0,count($try[$len-2])-5);
+	$objPHPExcel->getActiveSheet()->setCellValue('A'.$row, $heading);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setSize(20);
+	$row++;
+	$cnt++;
+	}
+	else if($cnt>1)
+	{
+	$finalhtml=str_get_html($x);
 
 
 
@@ -261,28 +159,28 @@ $finalhtml=str_get_html($x);
 		$tdcount++;
 		
 		if($tdcount==1)
-		$columnchar='A';
+			$columnchar='A';
 		else if ($tdcount==2)
-		$columnchar='B';
+			$columnchar='B';
 		else if ($tdcount==3)
-		$columnchar='C';
+			$columnchar='C';
 		else if ($tdcount==4)
-		$columnchar='D';
+			$columnchar='D';
 		else if ($tdcount==5)
-		$columnchar='E';		
+			$columnchar='E';		
 		else if ($tdcount==6)
-		$columnchar='F';
+			$columnchar='F';
 		else if ($tdcount==7)
-		$columnchar='G';				
+			$columnchar='G';				
 				
 		$columncontent=str_get_html($tbldata->innertext);
 		$innerheading=$columncontent->find('h2');
 		     if(isset($innerheading[0]))
 		     {
-		     $objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $innerheading[0]->innertext);
-		     $objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setBold(true);
-             $objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setSize(17);
-		     $row++;
+		     	$objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $innerheading[0]->innertext);
+		     	$objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setBold(true);
+             		$objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setSize(17);
+		     	$row++;
 		  
 		     }
 		  
@@ -290,28 +188,28 @@ $finalhtml=str_get_html($x);
 	         {
 			   if(explode('<br/>',$para->innertext))
 			   {
-               $brtag= explode('<br/>',$para->innertext);	
+        			 $brtag= explode('<br/>',$para->innertext);	
 			   				foreach($brtag as $br)
 							{
 							 
 							 
 							 if($brcontent=str_get_html($br))
-							 {
-							 $boldtext=$brcontent->find('b');
-							 if(isset($boldtext[0]))
-							 {
-							 $xyz=$brcontent->find('b');
-							 $objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setBold(true);
-							 $objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $boldtext[0]->innertext);
-							 }
-							 else
-							 {
-							 $objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $br);
-							 }
-							 $row++;
-							 if($trmax<$row)
-			                 $trmax=$row;
-							}
+								 {
+							 	$boldtext=$brcontent->find('b');
+								 if(isset($boldtext[0]))
+							 		{
+							 	$xyz=$brcontent->find('b');
+								 $objPHPExcel->getActiveSheet()->getStyle($columnchar . $row)->getFont()->setBold(true);
+							 	$objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $boldtext[0]->innertext);
+									 }
+								 else
+							 		{
+							 	$objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $br);
+							 		}
+							 	$row++;
+							 	if($trmax<$row)
+			                 				$trmax=$row;
+								}
 							}
 			   		 
 			   }
@@ -319,8 +217,8 @@ $finalhtml=str_get_html($x);
 			   {
 			   $objPHPExcel->getActiveSheet()->setCellValue($columnchar . $row, $para->innertext);		
 			   $row++;
-			   if($trmax<$row)
-			   $trmax=$row;
+			   	if($trmax<$row)
+			   		$trmax=$row;
 			   }
 			   
 			   
@@ -341,16 +239,16 @@ $finalhtml=str_get_html($x);
 	   
 	   
 	   
-if($cnt<$cnth1tags) 
-{	   
-$try=explode('>', $x);
-$len=count($try);
-$heading=substr($try[$len-2],0,count($try[$len-2])-5);
-$objPHPExcel->getActiveSheet()->setCellValue('A'.$row, $heading);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setBold(true);
-$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setSize(20);
-$row++;
-}
+	if($cnt<$cnth1tags) 
+		{	   
+		$try=explode('>', $x);
+		$len=count($try);
+		$heading=substr($try[$len-2],0,count($try[$len-2])-5);
+		$objPHPExcel->getActiveSheet()->setCellValue('A'.$row, $heading);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$row)->getFont()->setSize(20);
+		$row++;
+		}
 
 
 }//ifelse end
@@ -387,7 +285,7 @@ $objPHPExcel->getActiveSheet()->setTitle('College Data');
 $objPHPExcel->setActiveSheetIndex(0);
 
 
-// Redirect output to a client’s web browser (Excel5)
+// Redirect output to a clientï¿½s web browser (Excel5)
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="' . $collegename . '.xls"');
 header('Cache-Control: max-age=0');
